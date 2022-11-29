@@ -56,7 +56,7 @@ uint8_t LIB_AHTXX::AHT10_readRawData() {
 	bufTX[1] = AHT10_DATA_MEASURMENT_CMD;
 	bufTX[2] = AHT10_DATA_NOP;
 	// 	Send measurement command
-	returnValue = i2c_write_blocking(i2c, _address, bufTX, 3 ,false);
+	returnValue = i2c_write_timeout_us(i2c, _address, bufTX, 3 ,false, AHT10_MY_I2C_DELAY );
 	if (returnValue < 1 )
 		return AHT10_ERROR; //error handler, collision on I2C bus
 
@@ -66,7 +66,7 @@ uint8_t LIB_AHTXX::AHT10_readRawData() {
 		busy_wait_ms(AHT10_MEASURMENT_DELAY); // measurement delay
 
 	// Read 6-bytes from sensor
-	returnValue = i2c_read_blocking(i2c, _address, _rawDataBuffer, 6 ,false );
+	returnValue = i2c_read_timeout_us(i2c, _address, _rawDataBuffer, 6 ,false, AHT10_MY_I2C_DELAY  );
 	if (returnValue < 1) {
 		_rawDataBuffer[0] = AHT10_ERROR;
 		return AHT10_ERROR;
@@ -140,7 +140,7 @@ bool LIB_AHTXX::AHT10_softReset(void) {
 	uint8_t bufTX[1];
 	bufTX[0]= AHT10_SOFT_RESET_CMD;
 
-	returnValue = i2c_write_blocking(i2c, _address, bufTX, 1 ,false );
+	returnValue = i2c_write_timeout_us(i2c, _address, bufTX, 1 ,false , AHT10_MY_I2C_DELAY );
 	if (returnValue < 1)
 		return false;
 
@@ -160,7 +160,7 @@ bool LIB_AHTXX::AHT10_setNormalMode(void) {
 	bufTX[1] = AHT10_DATA_NOP;
 	bufTX[2] = AHT10_DATA_NOP;
 
-	returnValue = i2c_write_blocking(i2c, _address, bufTX, 3 ,false );
+	returnValue = i2c_write_timeout_us(i2c, _address, bufTX, 3 ,false , AHT10_MY_I2C_DELAY );
 	if (returnValue < 1)
 		return false; //safety check, make sure transmission complete
 
@@ -181,7 +181,7 @@ bool LIB_AHTXX::AHT10_setCycleMode(void) {
 		bufTX[0] = AHT20_INIT_CMD;
 	bufTX[1] = AHT10_INIT_CYCLE_MODE | AHT10_INIT_CAL_ENABLE;
 	bufTX[2] = AHT10_DATA_NOP;
-	returnValue = i2c_write_blocking(i2c, _address, bufTX, 3 ,false );
+	returnValue = i2c_write_timeout_us(i2c, _address, bufTX, 3 ,false, AHT10_MY_I2C_DELAY  );
 
 	if (returnValue < 1)
 		return false; //safety check, make sure transmission complete
@@ -196,7 +196,7 @@ bool LIB_AHTXX::AHT10_setCycleMode(void) {
 
 uint8_t LIB_AHTXX::AHT10_readStatusByte() {
 
-	returnValue = i2c_read_blocking(i2c, _address, _rawDataBuffer, 1 ,false);
+	returnValue = i2c_read_timeout_us(i2c, _address, _rawDataBuffer, 1 ,false, AHT10_MY_I2C_DELAY );
 
 	if (returnValue < 1) {
 		_rawDataBuffer[0] = AHT10_ERROR;
@@ -244,7 +244,7 @@ bool LIB_AHTXX::AHT10_enableFactoryCalCoeff() {
 	bufTX[1] = AHT10_INIT_CAL_ENABLE;
 	bufTX[2] = AHT10_DATA_NOP;
 
-	returnValue = i2c_write_blocking(i2c, _address, bufTX, 3 ,false );
+	returnValue = i2c_write_timeout_us(i2c, _address, bufTX, 3 ,false, AHT10_MY_I2C_DELAY  );
 	
 	if (returnValue < 1)
 	{

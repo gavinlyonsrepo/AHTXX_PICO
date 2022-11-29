@@ -17,7 +17,7 @@
 
 #define AHT10_ADDRESS_0X38         0x38  // I2C address no.1 for AHT10/AHT15/AHT20, adres pin connect to GND
 #define AHT10_ADDRESS_0X39         0x39  // I2C address no.2 for AHT10 only, adres pin connect to Vcc
-#define AHT10_MY_I2C_DELAY           50 // Timeout for I2C comms, mS,
+#define AHT10_MY_I2C_DELAY        50000 // Timeout for I2C comms, uS,
 
 #define AHT10_INIT_CMD             0xE1  // init command for AHT10/AHT15
 #define AHT20_INIT_CMD             0xBE  // init command for AHT20
