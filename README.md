@@ -40,6 +40,11 @@ Supports sensors features:
 
 The Sensor uses I2C for communication's. Data is outputted (eg to a PC) via a USB.
 Can be set up for any I2C interface and speed. By default I2C0, GPIO16(SDATA) and GPIO17(SCLK) & 100kHz.
+If you want to use the other I2C port (I2C1) in addition to changing in the main.ccp,
+The user must change it in library header as well, could not find a way around this.
+
+* i2c_inst_t *i2c = i2c0 to i2c_inst_t *i2c = i2c1
+
 
 **Files**
 

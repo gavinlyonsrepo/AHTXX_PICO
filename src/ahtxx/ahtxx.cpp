@@ -42,7 +42,11 @@ bool LIB_AHTXX::AHT10_begin()
 {
 	busy_wait_ms(AHT10_POWER_ON_DELAY);    //wait for sensor to initialize
 	AHT10_setNormalMode();                //one measurement+sleep mode
-	return AHT10_enableFactoryCalCoeff(); //load factory calibration coeff
+	if (AHT10_enableFactoryCalCoeff()) //load factory calibration coeff
+		isConnected = true;
+	else 
+		isConnected = false;
+	return isConnected; 
 }
 
 
@@ -288,4 +292,14 @@ void LIB_AHTXX::AHT10_DeInit(i2c_inst_t* i2c_type)
 {
 	i2c_inst_t *i2c = i2c_type;
 	i2c_deinit(i2c); 	
+}
+
+void LIB_AHTXX::AHT10_SetIsConnected(bool connected)
+{
+	isConnected = connected;
+}
+
+bool LIB_AHTXX::AHT10_GetIsConnected(void)
+{
+	return isConnected;
 }

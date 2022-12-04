@@ -57,6 +57,7 @@ private:
     ASAIR_I2C_SENSOR_e _sensorName;
     uint8_t  _rawDataBuffer[6] = {AHT10_ERROR, 0, 0, 0, 0, 0};
     int16_t  returnValue = 0;
+    bool isConnected = false;
 
 public:
     // Constructor
@@ -76,6 +77,9 @@ public:
     uint8_t  AHT10_getCalibrationBit(bool);
     bool     AHT10_enableFactoryCalCoeff();
     uint8_t  AHT10_getBusyBit(bool);
+
+    void AHT10_SetIsConnected(bool);
+    bool AHT10_GetIsConnected(void);
 };
 #endif
 
