@@ -10,29 +10,32 @@
 #include "../include/ahtxx/ahtxx.hpp"
 
 // Constructor Desc init the sensor data types call before begin()
-// Param 1 I2C address
-// Param 2 Enum with Sensor types
+// Param 1 : I2C address
+// Param 2 : IC2 interface , ic20 or i2c1 
+// Param 3 : Data pin I2C
+// Param 4 : Clock pin I2C
+// Param 5 : I2C Clock speed in Khz 0-400Khz
 
-LIB_AHTXX::LIB_AHTXX(uint8_t address, ASAIR_I2C_SENSOR_e sensorName) {
+LIB_AHTXX::LIB_AHTXX(uint8_t address, i2c_inst_t* i2c_type, uint8_t  SDApin, uint8_t  SCLKpin, uint16_t CLKspeed) {
 	_address = address;
-	_sensorName = sensorName;
+	 i2c = i2c_type; 
+    _SClkPin = SCLKpin;
+    _SDataPin = SDApin;
+    _CLKSpeed = CLKspeed;
 }
 
 // Function Desc Initialise the I2C
-// Param 1 : IC2 interface ic20 i2c1 etc
-// Param 2 : Data pin I2C
-// Param 3 : Clock pin I2C
-// Param 4 : I2C Clock speed in Khz 0-400Khz
+// Param 1 :: Enum with Sensor types
 // NOTE :: call before begin method
 
-void LIB_AHTXX::AHT10_InitI2C(i2c_inst_t* i2c_type, uint8_t  SDApin, uint8_t  SCLKpin, uint16_t CLKspeed) {
-	i2c_inst_t *i2c = i2c_type;
+void LIB_AHTXX::AHT10_InitI2C(ASAIR_I2C_SENSOR_e sensorName) {
+	_sensorName = sensorName;
 	//init I2C
-	i2c_init(i2c, CLKspeed * 1000);
-	gpio_set_function(SDApin, GPIO_FUNC_I2C);
-    gpio_set_function(SCLKpin, GPIO_FUNC_I2C);
-	gpio_pull_up(SDApin);
-    gpio_pull_up(SCLKpin);
+	gpio_set_function(_SDataPin, GPIO_FUNC_I2C);
+    gpio_set_function(_SClkPin, GPIO_FUNC_I2C);
+	gpio_pull_up(_SDataPin);
+    gpio_pull_up(_SClkPin);
+	i2c_init(i2c, _CLKSpeed * 1000);
 }
 
  // Function desc: Initialize I2C & configure the sensor, call this function before
@@ -288,9 +291,10 @@ uint8_t LIB_AHTXX::AHT10_getBusyBit(bool readI2C) {
 }
 
 
-void LIB_AHTXX::AHT10_DeInit(i2c_inst_t* i2c_type)
+void LIB_AHTXX::AHT10_DeInit()
 {
-	i2c_inst_t *i2c = i2c_type;
+	gpio_set_function(_SDataPin, GPIO_FUNC_NULL);
+    gpio_set_function(_SClkPin, GPIO_FUNC_NULL);
 	i2c_deinit(i2c); 	
 }
 

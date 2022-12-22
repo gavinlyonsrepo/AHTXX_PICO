@@ -13,16 +13,16 @@
 #include "pico/stdlib.h"
 #include "ahtxx/ahtxx.hpp"
 
-LIB_AHTXX myAHT10(AHT10_ADDRESS_0X38, AHT10_SENSOR);
+LIB_AHTXX myAHT10(AHT10_ADDRESS_0X38, i2c0, 16, 17, 100);
 
 int main(void) {
 
 	float AHT10_temperature;
 	stdio_init_all();  // Initialize chosen serial port, 38400 default baudrate.
-	busy_wait_ms(500);
+	busy_wait_ms(1000);
 
 	printf("AHT10 Start \r\n");
-	myAHT10.AHT10_InitI2C(i2c0, 16, 17, 100);
+	myAHT10.AHT10_InitI2C(AHT10_SENSOR);
 	busy_wait_ms(500);
 
 	// Start the sensor comms

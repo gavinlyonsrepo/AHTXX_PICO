@@ -52,8 +52,11 @@ typedef enum ASAIR_I2C_SENSOR_e{
 class LIB_AHTXX
 {
 private:
-    i2c_inst_t *i2c = i2c0;
+    i2c_inst_t *i2c;
     uint8_t  _address;
+    uint8_t _SDataPin;
+    uint8_t _SClkPin;
+    uint16_t _CLKSpeed = 100; //I2C bus speed in khz typically 100-400
     ASAIR_I2C_SENSOR_e _sensorName;
     uint8_t  _rawDataBuffer[6] = {AHT10_ERROR, 0, 0, 0, 0, 0};
     int16_t  returnValue = 0;
@@ -61,10 +64,10 @@ private:
 
 public:
     // Constructor
-    LIB_AHTXX(uint8_t , ASAIR_I2C_SENSOR_e);
+    LIB_AHTXX(uint8_t address, i2c_inst_t* i2c_type, uint8_t sdata , uint8_t sclk ,uint16_t clockspeed);
 
-    void     AHT10_InitI2C(i2c_inst_t* i2c_type,  uint8_t sdata , uint8_t sclk ,uint16_t clockspeed);
-    void     AHT10_DeInit(i2c_inst_t* i2c_type);
+    void     AHT10_InitI2C(ASAIR_I2C_SENSOR_e sensorName);
+    void     AHT10_DeInit();
     bool     AHT10_begin();
     uint8_t  AHT10_readRawData();
     float    AHT10_readTemperature(bool);
