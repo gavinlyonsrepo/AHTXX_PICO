@@ -8,7 +8,7 @@ Library for  Aosong ASAIR AHT10, AHT15 & AHT20 Digital Humidity & Temperature Se
 Only tested on AHT10.
 * Developed on
 	1. Raspberry pi PICO RP2040
-	2. SDK C++ compiler G++ for arm-none-eabi
+	2. SDK C++ compiler,  arm-none-eabi-g++ (15:10.3)
 	3. CMAKE , VScode
 
 Features
@@ -33,7 +33,7 @@ Supports sensors features:
 
 1. Read humidity
 2. Read temperature
-3. Soft reset with sensor initialisation
+3. Soft reset with sensor initialization
 4. The library returns an errors if a communication error occurs or if the calibration coefficient is off.
 
 **Connections**
